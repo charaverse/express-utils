@@ -32,7 +32,7 @@ jobs:
         if: ${{ matrix.node-version == '12.x' || matrix.node-version == '14.x' }}
         run: |
           rm package-lock.json
-          npm i
+          npm i --production=false
       - name: Run tests
         run: npm test -- --coverage
   test-build:

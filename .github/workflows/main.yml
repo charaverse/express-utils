@@ -30,7 +30,7 @@ jobs:
       # due to some issues with fsevents and jest-haste-map.
       # https://stackoverflow.com/questions/68021121/fsevents-not-accessible-from-jest-haste-map
       - name: Install dependencies (npm < 7)
-        if: ${{ contains(['12.x', '14.x'], matrix.node-version) }}
+        if: ${{ matrix.node-version == '12.x' || matrix.node-version == '14.x' }}
         run: |
           rm package-lock.json
           npm i

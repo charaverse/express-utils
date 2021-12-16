@@ -1,0 +1,9 @@
+.husky/
+coverage/
+dist/
+*.env
+.editorconfig
+.eslintignore
+.gitignore
+.prettierignore
+LICENSE

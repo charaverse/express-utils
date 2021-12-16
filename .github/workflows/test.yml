@@ -23,7 +23,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
+        if: ${{ matrix.node-version == '16.x' }}
         run: npm ci
+      # For npm < 7, we need to install from scratch instead of using lockfile v2,
+      # due to some issues with fsevents and jest-haste-map.
+      # https://stackoverflow.com/questions/68021121/fsevents-not-accessible-from-jest-haste-map
+      - name: Install dependencies (npm < 7)
+        if: ${{ contains(['12.x', '14.x'], matrix.node-version) }}
+        run: |
+          rm package-lock.json
+          npm i
       - name: Run tests
         run: npm test -- --coverage
   test-build:

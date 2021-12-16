@@ -4,39 +4,7 @@ on:
       - "main"
 
 jobs:
-  # Copy-paste this from jobs: test in test workflow
-  test-node:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ["12.x", "14.x", "16.x"]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        if: ${{ matrix.node-version == '16.x' }}
-        run: npm ci
-      # For npm < 7, we need to install from scratch instead of using lockfile v2,
-      # due to some issues with fsevents and jest-haste-map.
-      # https://stackoverflow.com/questions/68021121/fsevents-not-accessible-from-jest-haste-map
-      - name: Install dependencies (npm < 7)
-        if: ${{ matrix.node-version == '12.x' || matrix.node-version == '14.x' }}
-        run: |
-          rm package-lock.json
-          npm i --production=false
-      - name: Run tests
-        run: npm test -- --coverage
-  test-build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -54,12 +22,14 @@ jobs:
         run: npm ci
       - name: Execute linter
         run: npm run lint
+      - name: Run tests
+        run: npm test -- --coverage
       - name: Build TypeScript
         run: npm run build
       - name: Build documentation
         run: npm run docs
   publish-npm:
-    needs: [test-node, test-build]
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -83,7 +53,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   publish-docs:
-    needs: [test-node, test-build]
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

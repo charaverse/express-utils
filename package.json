@@ -23,7 +23,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=16"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,6 +1,5 @@
 {
-  "entryPoints": ["src/"],
-  "entryPointStrategy": "expand",
+  "entryPoints": ["src/index.ts"],
   "out": "docs",
   "excludePrivate": true,
   "excludeInternal": true

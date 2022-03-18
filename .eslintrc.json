@@ -1,6 +1,9 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "tsconfig.eslint.json"
+  },
   "plugins": ["@typescript-eslint", "jest"],
   "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "env": {
@@ -15,7 +18,7 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "prettier"
       ]
     },
@@ -25,7 +28,10 @@
         "jest": true
       },
       "rules": {
-        "@typescript-eslint/no-explicit-any": "off"
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-return": "off"
       }
     }
   ]

@@ -8,7 +8,7 @@ type HandleFunction<T = void> = (ctx: {
 }) => HandleValue<T> | Promise<HandleValue<T>>;
 
 export function handle<T = void>(fn: HandleFunction<T>): RequestHandler {
-  return (req, res, next) =>
+  return (req, res, next) => {
     (async () => {
       const result = await fn({ req, res });
 
@@ -37,4 +37,5 @@ export function handle<T = void>(fn: HandleFunction<T>): RequestHandler {
           break;
       }
     })().catch(next);
+  };
 }
